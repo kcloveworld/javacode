@@ -1,4 +1,4 @@
-package com.iteheima.test;
+package com.itheima.test;
 
 import java.util.Random;
 
@@ -36,6 +36,6 @@ public class Test {
         }
         //解法2
         //遍历二维数组
-        
+
     }
 }

@@ -29,8 +29,6 @@ public class GameJFrame extends JFrame{
             tempArr[i] = tempArr[index];
             tempArr[index] = temp;
         }
-
-
         //解法1
         //遍历一维数组tempArr得到每一个元素，把每一个元素依次添加到二维数组当中
         for (int i = 0; i < tempArr.length; i++) {
