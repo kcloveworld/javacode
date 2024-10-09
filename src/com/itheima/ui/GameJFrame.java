@@ -1,6 +1,7 @@
 package com.itheima.ui;
 
 import javax.swing.*;
+import java.util.Random;
 
 public class GameJFrame extends JFrame{
     public GameJFrame() {
@@ -8,26 +9,48 @@ public class GameJFrame extends JFrame{
         initJFrame();
         //初始化菜单
         initJMenuBar();
+        //初始化数据
+        initData();
         //初始化图片
         initImage();
 
         this.setVisible(true);
     }
 
+    //创建一个二维数组
+    int[][] data = new int[4][4];
+    private void initData() {
+        int[] tempArr = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+        Random r = new Random();
+        //遍历数组，得到每一个元素，拿着每一个元素跟随即索引上的数据进行交换
+        for (int i = 0; i < tempArr.length; i++) {
+            int index = r.nextInt(tempArr.length);
+            int temp = tempArr[i];
+            tempArr[i] = tempArr[index];
+            tempArr[index] = temp;
+        }
+
+
+        //解法1
+        //遍历一维数组tempArr得到每一个元素，把每一个元素依次添加到二维数组当中
+        for (int i = 0; i < tempArr.length; i++) {
+            data[i / 4][i % 4] = tempArr[i];
+        }
+    }
+
     private void initImage() {
-        int number = 1;
         for (int j = 0; j < 4; j++) {
             //外循环---把内循环重复了4次
             for (int i = 0; i < 4; i++) {
+                int num = data[i][j];
                 //内循环----表示在1行添加4涨图片
                 //创建一个JLabel的对象（管理容器）
-                JLabel jLabel = new JLabel(new ImageIcon("E:\\code\\java\\puzzlegame\\image\\animal\\animal3\\" + number +".jpg"));
+                JLabel jLabel = new JLabel(new ImageIcon("E:\\code\\java\\puzzlegame\\image\\animal\\animal3\\" + num +".jpg"));
                 //指定图片位置
                 jLabel.setBounds(105 * i,105 * j,105,105);
                 //获取窗体，设置布局为null，即取消默认居中设置
                 this.getContentPane().add(jLabel);
                 //添加一次后，number需要自增，表示下一次添加后一张图片
-                number++;
             }
         }
 
