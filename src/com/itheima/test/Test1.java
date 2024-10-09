@@ -2,7 +2,7 @@ package com.itheima.test;
 
 import java.util.Random;
 
-public class Test {
+public class Test1 {
     public static void main(String[] args) {
         //把一个一维数组的中的数据：0 -15 打乱顺序
         int[] tempArr = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
