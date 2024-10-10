@@ -7,10 +7,10 @@ import java.security.PublicKey;
 import java.util.Random;
 
 public class MyJFrame extends JFrame implements ActionListener{
-
+    // 定义两个按钮
     JButton jbt1 = new JButton("点击我");
     JButton jbt2 = new JButton("再点击我啊");
-
+    // 构造器
     public MyJFrame() {
         //设置界面的宽和高
         this.setSize(603, 680);
