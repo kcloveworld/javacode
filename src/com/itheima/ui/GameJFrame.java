@@ -1,9 +1,18 @@
 package com.itheima.ui;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Random;
 
-public class GameJFrame extends JFrame{
+public class GameJFrame extends JFrame implements KeyListener {
+    //记录空白方块在二维数组的位置
+    int x = 0 ;
+    int y = 0 ;
+
+    int[][] data = new int[4][4];
+
     public GameJFrame() {
         //初始化界面
         initJFrame();
@@ -18,7 +27,7 @@ public class GameJFrame extends JFrame{
     }
 
     //创建一个二维数组
-    int[][] data = new int[4][4];
+
     private void initData() {
         int[] tempArr = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
         Random r = new Random();
@@ -32,25 +41,45 @@ public class GameJFrame extends JFrame{
         //解法1
         //遍历一维数组tempArr得到每一个元素，把每一个元素依次添加到二维数组当中
         for (int i = 0; i < tempArr.length; i++) {
-            data[i / 4][i % 4] = tempArr[i];
+            if (tempArr[i] == 0){
+                x = i / 4 ;
+                y = i % 4;
+            }
+            else
+                data[i / 4][i % 4] = tempArr[i];
         }
     }
 
     private void initImage() {
-        for (int j = 0; j < 4; j++) {
+        //清空已经出现的所有图片
+        this.getContentPane().removeAll();
+
+        for (int i = 0; i < 4; i++) {
             //外循环---把内循环重复了4次
-            for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
                 int num = data[i][j];
                 //内循环----表示在1行添加4涨图片
                 //创建一个JLabel的对象（管理容器）
-                JLabel jLabel = new JLabel(new ImageIcon("E:\\code\\java\\puzzlegame\\image\\animal\\animal3\\" + num +".jpg"));
+                JLabel jLabel = new JLabel(new ImageIcon("image\\animal\\animal3\\" + num +".jpg"));
                 //指定图片位置
-                jLabel.setBounds(105 * i,105 * j,105,105);
+                jLabel.setBounds(105 * j + 83,105 * i + 134,105,105);
+                //给图片添加边框
+                jLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
                 //获取窗体，设置布局为null，即取消默认居中设置
                 this.getContentPane().add(jLabel);
                 //添加一次后，number需要自增，表示下一次添加后一张图片
+
             }
         }
+        //添加背景图片
+        JLabel background = new JLabel(new ImageIcon("image\\background.png"));
+        background.setBounds(40,40,508,560);
+        //把背景图片添加到当前的界面当中
+        this.getContentPane().add(background);
+
+        //刷新界面
+        this.getContentPane().repaint();
+
 
     }
 
@@ -85,5 +114,59 @@ public class GameJFrame extends JFrame{
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         //取消默认居中放置
         this.setLayout(null);
+        //添加键盘监听器
+        this.addKeyListener(this);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        if (keyCode == 37){
+            System.out.println("向左移动");
+
+            if (y < 3) {
+                System.out.println("向右移动");
+                data[x][y] = data[x][y + 1];
+                data[x][y +1] = 0;
+                y++;
+                initImage();
+            }
+        } else if (keyCode == 38) {
+            if (x < 3) {
+                data[x][y] = data[x + 1][y];
+                data[x + 1][y] = 0;
+                x++;
+                initImage();
+            }else
+                System.out.println("超出范围");
+        }else if (keyCode == 39) {
+            System.out.println("向右移动");
+            if (y > 0) {
+                data[x][y] = data[x][y - 1];
+                data[x][y - 1] = 0;
+                y--;
+                initImage();
+            }
+        }else if (keyCode == 40){
+            if (x > 0) {
+                System.out.println("向下移动");
+                data[x][y] = data[x - 1][y];
+                data[x -1][y] = 0;
+                x--;
+                initImage();
+            }
+        }
+
+
     }
 }
