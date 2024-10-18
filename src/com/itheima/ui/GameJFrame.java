@@ -10,8 +10,16 @@ public class GameJFrame extends JFrame implements KeyListener {
     //记录空白方块在二维数组的位置
     int x = 0 ;
     int y = 0 ;
+    String path = "D:\\code\\puzzlegame\\image\\animal\\animal3\\";
+
 
     int[][] data = new int[4][4];
+    int[][] win = new int[][]{
+            {1,2,3,4},
+            {5,6,7,8},
+            {9,10,11,12},
+            {13,14,15,0}
+    };
 
     public GameJFrame() {
         //初始化界面
@@ -26,8 +34,7 @@ public class GameJFrame extends JFrame implements KeyListener {
         this.setVisible(true);
     }
 
-    //创建一个二维数组
-
+    //初始化数据（打乱）
     private void initData() {
         int[] tempArr = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
         Random r = new Random();
@@ -49,10 +56,16 @@ public class GameJFrame extends JFrame implements KeyListener {
                 data[i / 4][i % 4] = tempArr[i];
         }
     }
-
+    //初始化图片
     private void initImage() {
         //清空已经出现的所有图片
         this.getContentPane().removeAll();
+        if (victory()) {
+            //显示胜利的图标
+            JLabel winJLabel = new JLabel(new ImageIcon("image/win.png"));
+            winJLabel.setBounds(203,283,197,73);
+            this.getContentPane().add(winJLabel);
+        };
 
         for (int i = 0; i < 4; i++) {
             //外循环---把内循环重复了4次
@@ -60,7 +73,7 @@ public class GameJFrame extends JFrame implements KeyListener {
                 int num = data[i][j];
                 //内循环----表示在1行添加4涨图片
                 //创建一个JLabel的对象（管理容器）
-                JLabel jLabel = new JLabel(new ImageIcon("image\\animal\\animal3\\" + num +".jpg"));
+                JLabel jLabel = new JLabel(new ImageIcon(path + num +".jpg"));
                 //指定图片位置
                 jLabel.setBounds(105 * j + 83,105 * i + 134,105,105);
                 //给图片添加边框
@@ -125,12 +138,35 @@ public class GameJFrame extends JFrame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        if (keyCode == 65){
+            //把界面上所有的图片都删除
+            this.getContentPane().removeAll();
+            //加载第一张完整的图片
+            JLabel all = new JLabel(new ImageIcon(path + "all.jpg"));
+            all.setBounds(83,134,420,420);
+            this.getContentPane().add(all);
+            //添加背景图片
+            JLabel background = new JLabel(new ImageIcon("image\\background.png"));
+            background.setBounds(40,40,508,560);
+            //把背景图片添加到当前的界面当中
+            this.getContentPane().add(background);
+
+            //刷新界面
+            this.getContentPane().repaint();
+        }
 
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        //判断游戏是否胜利
+        //如果胜利，此方法需要直接结束，不执行下面的移动代码
         int keyCode = e.getKeyCode();
+        if (victory()){
+            //结束方法
+            return;
+        }
         if (keyCode == 37){
             System.out.println("向左移动");
 
@@ -165,8 +201,29 @@ public class GameJFrame extends JFrame implements KeyListener {
                 x--;
                 initImage();
             }
+        }else if (keyCode == 65){
+            initImage();
+        } else if (keyCode == 87){
+            data = new int[][]{
+                    {1,2,3,4},
+                    {5,6,7,8},
+                    {9,10,11,12},
+                    {13,14,15,0}
+            };
+            initImage();
         }
+    }
 
-
+    //判断data数组中的数据是否和win数据相同
+    //不同返回falase，相同返回true
+    public boolean victory(){
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[i].length; j++) {
+                if (data[i][j] != win[i][j]){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
