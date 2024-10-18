@@ -11,6 +11,7 @@ public class GameJFrame extends JFrame implements KeyListener {
     int x = 0 ;
     int y = 0 ;
     String path = "D:\\code\\puzzlegame\\image\\animal\\animal3\\";
+    int step = 0;
 
 
     int[][] data = new int[4][4];
@@ -37,6 +38,7 @@ public class GameJFrame extends JFrame implements KeyListener {
     //初始化数据（打乱）
     private void initData() {
         int[] tempArr = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+
         Random r = new Random();
         //遍历数组，得到每一个元素，拿着每一个元素跟随即索引上的数据进行交换
         for (int i = 0; i < tempArr.length; i++) {
@@ -65,7 +67,12 @@ public class GameJFrame extends JFrame implements KeyListener {
             JLabel winJLabel = new JLabel(new ImageIcon("image/win.png"));
             winJLabel.setBounds(203,283,197,73);
             this.getContentPane().add(winJLabel);
-        };
+        }
+
+        //添加计步器
+        JLabel stepCount = new JLabel("步数：" + step);
+        stepCount.setBounds(50,30,100,20);
+        this.getContentPane().add(stepCount);
 
         for (int i = 0; i < 4; i++) {
             //外循环---把内循环重复了4次
@@ -175,6 +182,7 @@ public class GameJFrame extends JFrame implements KeyListener {
                 data[x][y] = data[x][y + 1];
                 data[x][y +1] = 0;
                 y++;
+                step++;
                 initImage();
             }
         } else if (keyCode == 38) {
@@ -182,6 +190,7 @@ public class GameJFrame extends JFrame implements KeyListener {
                 data[x][y] = data[x + 1][y];
                 data[x + 1][y] = 0;
                 x++;
+                step++;
                 initImage();
             }else
                 System.out.println("超出范围");
@@ -191,6 +200,7 @@ public class GameJFrame extends JFrame implements KeyListener {
                 data[x][y] = data[x][y - 1];
                 data[x][y - 1] = 0;
                 y--;
+                step++;
                 initImage();
             }
         }else if (keyCode == 40){
@@ -199,6 +209,7 @@ public class GameJFrame extends JFrame implements KeyListener {
                 data[x][y] = data[x - 1][y];
                 data[x -1][y] = 0;
                 x--;
+                step++;
                 initImage();
             }
         }else if (keyCode == 65){
