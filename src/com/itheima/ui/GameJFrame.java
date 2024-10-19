@@ -2,11 +2,13 @@ package com.itheima.ui;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
 
-public class GameJFrame extends JFrame implements KeyListener {
+public class GameJFrame extends JFrame implements KeyListener, ActionListener {
     //记录空白方块在二维数组的位置
     int x = 0 ;
     int y = 0 ;
@@ -21,6 +23,11 @@ public class GameJFrame extends JFrame implements KeyListener {
             {9,10,11,12},
             {13,14,15,0}
     };
+
+    JMenuItem replayItem = new JMenuItem("重新游戏");
+    JMenuItem reLoginItem = new JMenuItem("重新登录");
+    JMenuItem closeItem = new JMenuItem("关闭游戏");
+    JMenuItem accountItem = new JMenuItem("公众号");
 
     public GameJFrame() {
         //初始化界面
@@ -53,6 +60,7 @@ public class GameJFrame extends JFrame implements KeyListener {
             if (tempArr[i] == 0){
                 x = i / 4 ;
                 y = i % 4;
+                data[i / 4][i % 4] = tempArr[i];
             }
             else
                 data[i / 4][i % 4] = tempArr[i];
@@ -108,17 +116,17 @@ public class GameJFrame extends JFrame implements KeyListener {
         JMenu functionJMenu = new JMenu("功能");
         JMenu aboutJMenu = new JMenu("关于我们");
 
-        JMenuItem replayItem = new JMenuItem("重新游戏");
-        JMenuItem reLoginItem = new JMenuItem("重新登录");
-        JMenuItem closeItem = new JMenuItem("关闭游戏");
-
-        JMenuItem accountItem = new JMenuItem("公众号");
-
         functionJMenu.add(replayItem);
         functionJMenu.add(reLoginItem);
         functionJMenu.add(closeItem);
 
         aboutJMenu.add(accountItem);
+
+        //条目添加监听器
+        replayItem.addActionListener(this);
+        reLoginItem.addActionListener(this);
+        closeItem.addActionListener(this);
+        accountItem.addActionListener(this);
 
         jMenuBar.add(functionJMenu);
         jMenuBar.add(aboutJMenu);
@@ -236,5 +244,39 @@ public class GameJFrame extends JFrame implements KeyListener {
             }
         }
         return true;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+        if (source == replayItem){
+            //记计步器清零
+            step = 0 ;
+            initData();
+            //初始化图片
+            initImage();
+        } else if (source == reLoginItem){
+            //隐藏界面
+            this.setVisible(false);
+            //打开登录界面
+            new LoginJFrame();
+        }else if (source == closeItem){
+            //关闭虚拟机
+            System.exit(0);
+        }else if (source == accountItem){
+            JDialog jDialog = new JDialog();
+            JLabel jLabel = new JLabel(new ImageIcon("image/about.png"));
+            //设置位置和宽高
+            jLabel.setBounds(0,0,258,258);
+            jDialog.getContentPane().add(jLabel);
+            jDialog.setSize(344,344);
+            jDialog.setAlwaysOnTop(true);
+            //弹框居中
+            jDialog.setLocationRelativeTo(null);
+            //弹窗不关闭则无法操作下面的界面
+            jDialog.setModal(true);
+            //让弹窗显示出来
+            jDialog.setVisible(true);
+        }
     }
 }
