@@ -28,6 +28,9 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener {
     JMenuItem reLoginItem = new JMenuItem("重新登录");
     JMenuItem closeItem = new JMenuItem("关闭游戏");
     JMenuItem accountItem = new JMenuItem("公众号");
+    JMenuItem girlItem = new JMenuItem("美女");
+    JMenuItem animalItem = new JMenuItem("动物");
+    JMenuItem sportItem = new JMenuItem("运动");
 
     public GameJFrame() {
         //初始化界面
@@ -110,15 +113,26 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener {
 
 
     }
-
+    //初始化菜单栏
     private void initJMenuBar() {
         JMenuBar jMenuBar = new JMenuBar();
         JMenu functionJMenu = new JMenu("功能");
         JMenu aboutJMenu = new JMenu("关于我们");
+        //更换图片嵌套在功能菜单中，也要用JMenu
+        JMenu changeImageJMenu = new JMenu("更换图片");
 
+        functionJMenu.add(changeImageJMenu);
         functionJMenu.add(replayItem);
         functionJMenu.add(reLoginItem);
         functionJMenu.add(closeItem);
+
+        //JMenu更换图片 添加 JMenuBar
+        changeImageJMenu.add(girlItem);
+        changeImageJMenu.add(animalItem);
+        changeImageJMenu.add(sportItem);
+
+
+
 
         aboutJMenu.add(accountItem);
 
@@ -127,6 +141,9 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener {
         reLoginItem.addActionListener(this);
         closeItem.addActionListener(this);
         accountItem.addActionListener(this);
+        girlItem.addActionListener(this);
+        animalItem.addActionListener(this);
+        sportItem.addActionListener(this);
 
         jMenuBar.add(functionJMenu);
         jMenuBar.add(aboutJMenu);
@@ -277,6 +294,34 @@ public class GameJFrame extends JFrame implements KeyListener, ActionListener {
             jDialog.setModal(true);
             //让弹窗显示出来
             jDialog.setVisible(true);
+        } else if (source == girlItem) {
+            System.out.println("随机美女图片");
+            Random r = new Random();
+            int number = r.nextInt(13) + 1;
+            path = "D:\\code\\puzzlegame\\image\\girl\\girl" +number + "\\";
+            System.out.println(path);
+            step = 0;
+            initData();
+            initImage();
+
+        } else if (source == animalItem) {
+            System.out.println("随机动图片");
+            Random r = new Random();
+            int number = r.nextInt(8) + 1;
+            path = "D:\\code\\puzzlegame\\image\\animal\\animal" +number + "\\";
+            System.out.println(path);
+            step = 0;
+            initData();
+            initImage();
+        } else if (source == sportItem) {
+            System.out.println("随机运动图片");
+            Random r = new Random();
+            int number = r.nextInt(10) + 1;
+            path = "D:\\code\\puzzlegame\\image\\sport\\sport" +number + "\\";
+            System.out.println(path);
+            step = 0;
+            initData();
+            initImage();
         }
     }
 }
